@@ -50,7 +50,7 @@ class Robot {
     
     //@param {array} currentSpot - eg. set [ x, y ] to [ 0, 0 ], [ 0, 1 ]
     //@param {number} facing - One of NORTH, EAST, SOUTH, WEST
-    constructor( spot, facing ) {
+    constructor( spot = [ 0, 0 ], facing = NORTH ) {
         
         this.currentSpot = spot;
         this.facing = facing;
@@ -96,10 +96,46 @@ class Robot {
         return true;
     }
     
+    getSpotAndFacing() {
+        
+        return this.currentSpot.slice().concat( this.getFacingLiteral( this.facing ) );
+    }
+    
+    getFacingLiteral( facing ) {
+        
+        let facingLiteral = '';
+        
+        if ( facing === NORTH ) {
+            
+            facingLiteral = 'NORTH';
+        }
+        else if ( facing === EAST ) {
+            
+            facingLiteral = 'EAST';
+        }
+        else if ( facing === SOUTH ) {
+            
+            facingLiteral = 'SOUTH';
+        }
+        else if ( facing === WEST ) {
+            
+            facingLiteral = 'WEST';
+        }
+        
+        return facingLiteral;
+    }
+    
     handleCommandPlace( spot = [ 0, 0 ], facing = NORTH ) {
+        
+        if ( this.isLandable( spot ) === false ) {
+            
+            throw new RobotWillFallError();
+        }
         
         this.currentSpot = spot;
         this.facing = facing;
+        
+        return this.getSpotAndFacing();
     }
     
     handleCommandLeft() {
@@ -112,6 +148,8 @@ class Robot {
             
             this.facing -= 1;
         }
+        
+        return this.getSpotAndFacing();
     }
     
     handleCommandRight() {
@@ -124,6 +162,8 @@ class Robot {
             
             this.facing += 1;
         }
+        
+        return this.getSpotAndFacing();
     }
     
     handleCommandMove() {
@@ -138,29 +178,14 @@ class Robot {
             
             throw new RobotWillFallError();
         }
+        
+        return this.getSpotAndFacing();
     }
     
     handleCommandReport() {
         
-        let facingLiteral = '';
-        
-        if ( this.facing === NORTH ) {
-            
-            facingLiteral = 'NORTH';
-        }
-        else if ( this.facing === EAST ) {
-            
-            facingLiteral = 'EAST';
-        }
-        else if ( this.facing === SOUTH ) {
-            
-            facingLiteral = 'SOUTH';
-        }
-        else if ( this.facing === WEST ) {
-            
-            facingLiteral = 'WEST';
-        }
-        
+        let facingLiteral = this.getFacingLiteral( this.facing );
+
         console.log( `Output: ${this.currentSpot[0]}, ${this.currentSpot[1]}, ${facingLiteral}` );
     }
     
