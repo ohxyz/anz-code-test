@@ -17,7 +17,7 @@ class RobotWillFallError extends Error {
     constructor() {
         
         super();       
-        this.message = `The robot will fall if keep moving.`;
+        this.message = `The robot will fall from the table.`;
     }
 }
 
@@ -26,7 +26,7 @@ class InvalidCommandError extends Error {
     constructor() {
         
         super();       
-        this.message = 'The Command should be one of the following: '
+        this.message = 'The command should be one of the following: '
                      + 'PLACE, LEFT, RIGHT, MOVE, REPORT';
     }
 }
@@ -44,11 +44,11 @@ let util = {
         
         return true;
     }
-}
+};
 
 class Robot {
     
-    //@param {array} currentSpot - eg. set [ x, y ] to [ 0, 0 ], [ 0, 1 ]
+    //@param {array} spot - eg. set [ x, y ] to [ 0, 0 ], [ 0, 1 ]
     //@param {number} facing - One of NORTH, EAST, SOUTH, WEST
     constructor( spot = [ 0, 0 ], facing = NORTH ) {
         
@@ -268,6 +268,11 @@ class Robot {
 
 let robotAnz = new Robot();
 
-window.r = robotAnz;
+// Interative unit-test in Chrome dev tools
+window.robotAnz = robotAnz;
+window.NORTH    = 1;
+window.EAST     = 2;
+window.SOUTH    = 3;
+window.WEST     = 4;
 
 console.log( 'End...' );
